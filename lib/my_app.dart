@@ -20,7 +20,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     getUserDeviceToken();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-
       if (message.notification != null) {
         log('Message Title: ${message.notification!.title}');
         log('Message Body: ${message.notification!.body}');
