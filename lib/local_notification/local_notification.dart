@@ -1,17 +1,26 @@
 import 'dart:developer';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import '../targetscreen.dart';
 
 class LocalNotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
-  Future<void> initialize() async {
+  Future<void> initialize(BuildContext context) async {
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('app_icon');
-    const InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+        _handleNotificationClick(context, response.payload);
+      },
+    );
   }
 
   Future<void> instantNotification({required String title, required String body}) async {
@@ -23,15 +32,24 @@ class LocalNotificationService {
       priority: Priority.high,
       showWhen: false,
     );
+
     const NotificationDetails platformChannelSpecifics =
     NotificationDetails(android: androidPlatformChannelSpecifics);
+
     await flutterLocalNotificationsPlugin.show(
       0,
       title,
       body,
       platformChannelSpecifics,
-      payload: 'item x',
+      payload: body, // Add any payload data if needed
     );
   }
 
+  void _handleNotificationClick(BuildContext context, String? payload) {
+    log("payload $payload");
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TargetScreen(payload: payload)),
+    );
+  }
 }

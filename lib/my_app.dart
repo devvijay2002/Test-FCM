@@ -1,7 +1,7 @@
 import 'dart:developer';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+
 import 'local_notification/local_notification.dart';
 
 
@@ -18,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    notificationService.initialize(context);
     getUserDeviceToken();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       if (message.notification != null) {
@@ -29,10 +30,8 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       }
 
-      // Handle data payload when app is in the background or terminated
       if (message.data.isNotEmpty) {
         log('Message Data: ${message.data}');
-        // Access data fields directly as needed, e.g., message.data['key']
       }
     });
   }
@@ -47,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
       log('Error in getting token error: $e');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
