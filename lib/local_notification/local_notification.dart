@@ -22,6 +22,7 @@ class LocalNotificationService {
       showWhen: false,
     );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    
     await flutterLocalNotificationsPlugin.show(
       0,
       title,
