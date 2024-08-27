@@ -15,9 +15,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     NotificationService.requestNotificationPermission();
-    NotificationService.firebaseInit();
+    NotificationService.firebaseInit(context);
+    NotificationService.setupInteractMessage(context);
     NotificationService.getDeviceToken();
-   // NotificationService.initLocalNotification(context, null);
     super.initState();
   }
 
