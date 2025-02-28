@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 import 'dart:developer' as dev;
 import 'dart:io';
@@ -7,15 +8,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import '../screens/message_screen.dart';
 
 class NotificationService {
 
-  // create instance of FirebaseMessaging to use messaging functionality
+// create instance of FirebaseMessaging to use messaging functionality
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  // create instance of FlutterLocalNotificationsPlugin to display notification
+// create instance of FlutterLocalNotificationsPlugin to display notification
   static final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 // create a method to requestPermission for notification
@@ -40,7 +40,7 @@ class NotificationService {
     }
   }
 
-  // create a method to initialize foreground notification service
+// create a method to initialize foreground notification service
   static void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
       if (kDebugMode) {
@@ -48,10 +48,11 @@ class NotificationService {
         print('Notification body: ${message.notification?.body}');
         print('Notification custom data/payload: ${message.data}');
       }
+      if(Platform.isIOS){
+        foregroundMessage();
+      }
       if(Platform.isAndroid){
         initLocalNotification(context,message);
-        showNotification(message);
-      }else{
         showNotification(message);
       }
 
@@ -74,7 +75,7 @@ class NotificationService {
 
   }
 
-  // create a method to get FCM Token
+// create a method to get FCM Token
   static Future<String?> getDeviceToken() async {
     try {
       var fcmToken = await messaging.getToken();
@@ -90,7 +91,7 @@ class NotificationService {
   }
 
 
-// create a method to perform some foreground action like navigation on message receive with the help of onDidReceiveNotificationResponse . This will work only for android
+// create a method to perform some foreground action like navigation on message receive with the help of onDidReceiveNotificationResponse. This will work only for android
   static void initLocalNotification(BuildContext context,RemoteMessage message) async {
     var androidInitializationSetting = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializationSetting = const DarwinInitializationSettings();
@@ -151,4 +152,13 @@ class NotificationService {
     );
   }
 
+  //=======================
+  static Future foregroundMessage()async{
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      sound:true,
+      alert: true,
+      badge: true
+    );
+  }
 }
+*/

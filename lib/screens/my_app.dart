@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:test_app/notification_api.dart';
 import 'package:test_app/notification_service/notification_service.dart';
 
 
@@ -14,10 +15,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    NotificationService.requestNotificationPermission();
+/*    NotificationService.requestNotificationPermission();
+    NotificationService.foregroundMessage();
     NotificationService.firebaseInit(context);
     NotificationService.setupInteractMessage(context);
-    NotificationService.getDeviceToken();
+    NotificationService.getDeviceToken();*/
     super.initState();
   }
 
@@ -32,8 +34,11 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              onPressed: () {
-
+              onPressed: ()async{
+              await SendNotificationAPI.sendNotification(
+                  data: {"type":"msg"},
+                  title: "hi",
+                  toDeviceToken: "cyqnfIuwQPG9Wm6rdowK6N:APA91bFu0RcLCy8krnimn8BKnnaj0N-grMtT6uTFeumE2qy_dfUK5wmJSPc_SoCBe2c9lRtYB3cgICP65SsItq0DwkpMff1iIVfyjX91qfVPR2_xUBQM4Mj0ASrwktvaRt-iIMmrq3Ff");
               },
               child: const Text('Show Instant Notification'),
             ),
