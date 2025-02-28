@@ -21,7 +21,22 @@ final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
     super.initState();
   }
 
-  @override
+Future<void> _logAddToCartEvent(String productName, double price, int quantity) async {
+  await analytics.logEvent(
+    name: "add_to_cart",
+    parameters: {
+      "item_name": productName,
+      "price": price,
+      "quantity": quantity,
+      "currency": "USD", // Optional
+    },
+  );
+
+  log("Event Logged: add_to_cart -> $productName, Price: $price, Quantity: $quantity");
+}
+
+
+@override
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(title: const Text("Firebase Analytics")),
@@ -73,6 +88,18 @@ final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
                 );
               },
               child: const Text("Button 4"),
+            ),
+            ElevatedButton(
+              onPressed: () async{
+                await   _logAddToCartEvent("Product A", 19.99, 2);
+              },
+              child: const Text("Add To Cart A"),
+            ),
+            ElevatedButton(
+              onPressed: () async{
+                await   _logAddToCartEvent("Product B", 20.99, 3);
+              },
+              child: const Text("Add To Cart B"),
             ),
           ],
         ),
